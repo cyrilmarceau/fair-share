@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react-native";
-import HomeScreen from "../App";
+import Page from "~/app";
 
-describe("<HomeScreen />", () => {
+describe("<Page />", () => {
   test("Text renders correctly on HomeScreen", () => {
-    const { getByText } = render(<HomeScreen />);
+    const { getByText } = render(<Page />);
 
     getByText("Welcome!");
   });

@@ -1,21 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
+import { api } from "~/core/api/http-client";
 import { LoginResponseSchema } from "../schemas";
-import type { LoginSchemaType } from "../types";
 import { setIsAuthenticated } from "../stores";
-
+import type { LoginSchemaType } from "../types";
 export const useAuth = () => {
   const login = useMutation({
     mutationFn: async (credentials: LoginSchemaType) => {
-      const response = await fetch("http://127.0.0.1:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-      const data = await response.json();
+      const response = await api.post("login", { json: credentials }).json();
 
-      return LoginResponseSchema.parse(data);
+      return LoginResponseSchema.parse(response);
     },
     onSuccess(data, variables, context) {
       console.log("Login success", data);

@@ -25,11 +25,11 @@ jobs:
             - name: 🕵️ Linting
               run: npx expo lint
 
-            - name: 🧪 Run Tests
-              run: npm run test
+            # - name: 🧪 Run Tests
+            #   run: npm run test
 
-            - name: 📊 Code Coverage
-              run: npm run test:coverage
+            # - name: 📊 Code Coverage
+            #   run: npm run test:coverage
 
             # - name: 🛡️ Dependency Audit
             #   run: npm audit

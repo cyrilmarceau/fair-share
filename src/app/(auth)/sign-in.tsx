@@ -1,30 +1,32 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { View } from "react-native";
-import { Button, TextInput, useTheme, Text } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import { useAuth } from "~/features/auth/hooks";
 import { LoginSchema } from "~/features/auth/schemas";
 import type { LoginSchemaType } from "~/features/auth/types";
+import { FormError, FormInput } from "~/shared/components";
 
 const SignInPage = () => {
   const { login } = useAuth();
 
   const theme = useTheme();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginSchemaType>({
     defaultValues: {
-      email: "cyril.marceau.per@gmail.com",
+      email: "a@gmail.com",
       password: "password",
     },
     resolver: zodResolver(LoginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginSchemaType> = (data) => {
-    login.mutate(data);
+  const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
+    login.mutateAsync(data);
   };
 
   return (
@@ -47,52 +49,24 @@ const SignInPage = () => {
         Sign In
       </Text>
 
-      <Controller
+      <FormInput
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            testID="Email"
-            label="Email"
-            mode="outlined"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            error={!!errors.email}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            style={{ marginBottom: 10 }}
-          />
-        )}
         name="email"
+        label="Email"
+        keyboardType="email-address"
+        error={!!errors.email}
       />
-      {errors.email ? (
-        <Text style={{ color: theme.colors.error }}>
-          {errors.email.message}
-        </Text>
-      ) : null}
+      <FormError message={errors.email?.message} />
 
-      <Controller
+      <FormInput
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            testID="Password"
-            label="Password"
-            mode="outlined"
-            secureTextEntry
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            error={!!errors.password}
-            style={{ marginBottom: 10 }}
-          />
-        )}
         name="password"
+        label="Password"
+        secureTextEntry
+        error={!!errors.password}
       />
-      {errors.password ? (
-        <Text style={{ color: theme.colors.error }}>
-          {errors.password.message}
-        </Text>
-      ) : null}
+      <FormError message={errors.password?.message} />
+
       <Button
         mode="contained"
         onPress={handleSubmit(onSubmit)}

@@ -7,6 +7,8 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { PaperProvider } from "react-native-paper";
 import { queryClient } from "~/core/api";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
+
 export default function RootLayout() {
   return (
     <Providers>
@@ -29,6 +31,7 @@ function Providers({ children }: { children: React.ReactNode }) {
             </QueryClientProvider>
           </PaperProvider>
         </KeyboardProvider>
+        <Toast topOffset={60} />
       </SafeAreaView>
     </GestureHandlerRootView>
   );

@@ -15,6 +15,7 @@ export const useAuth = () => {
     },
     onSuccess(data, variables, context) {
       console.log("Login success", data);
+
       setIsAuthenticated(true);
       setAccessToken(data.access_token);
     },

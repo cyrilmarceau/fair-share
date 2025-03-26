@@ -1,13 +1,19 @@
 import { StyleSheet, View } from "react-native";
-import { useTheme, Surface, Avatar, Divider, Text } from "react-native-paper";
+import {
+  Avatar,
+  Divider,
+  Surface,
+  Text,
+  TouchableRipple,
+  useTheme,
+} from "react-native-paper";
 import type { Transaction } from "../types";
+import { useRouter } from "expo-router";
 
-type TransactionCardProps = Omit<
-  Transaction,
-  "id" | "created_at" | "updated_at"
->;
+type TransactionCardProps = Omit<Transaction, "created_at" | "updated_at">;
 
 const TransactionCard = ({
+  id,
   direction,
   title,
   amount,
@@ -18,74 +24,89 @@ const TransactionCard = ({
   const theme = useTheme();
   const isReceive = direction === "to_receive";
 
+  const router = useRouter();
+
   return (
-    <Surface style={styles.transactionCard} elevation={1}>
-      <View style={styles.cardHeader}>
-        <View style={styles.cardHeaderLeft}>
-          <Avatar.Icon
-            size={40}
-            style={{
-              backgroundColor: isReceive
-                ? theme.colors.primary
-                : theme.colors.error,
-              marginRight: 12,
-            }}
-            color="white"
-            icon={isReceive ? "arrow-up" : "arrow-down"}
-          />
-          <View>
-            <Text variant="titleMedium" style={styles.cardTitle}>
-              {title}
-            </Text>
-            <Text variant="bodySmall" style={{ color: theme.colors.outline }}>
-              {due_date}
+    <View style={styles.container}>
+      <TouchableRipple
+        style={styles.ripple}
+        borderless={true}
+        onPress={() =>
+          router.navigate({
+            pathname: "(app)/(transaction)/[id]",
+            params: { id },
+          })
+        }
+      >
+        <Surface style={styles.transactionCard} elevation={3}>
+          <View style={styles.cardHeader}>
+            <View style={styles.cardHeaderLeft}>
+              <Avatar.Icon
+                size={40}
+                style={{
+                  backgroundColor: isReceive
+                    ? theme.colors.primary
+                    : theme.colors.error,
+                  marginRight: 12,
+                }}
+                color="white"
+                icon={isReceive ? "arrow-up" : "arrow-down"}
+              />
+              <View>
+                <Text variant="titleMedium" style={styles.cardTitle}>
+                  {title}
+                </Text>
+                <Text
+                  variant="bodySmall"
+                  style={{ color: theme.colors.outline }}
+                >
+                  {due_date}
+                </Text>
+              </View>
+            </View>
+            <Text
+              variant="titleMedium"
+              style={{
+                color: isReceive ? theme.colors.primary : theme.colors.error,
+                fontWeight: "bold",
+              }}
+            >
+              {isReceive ? "+" : "-"} {amount} €
             </Text>
           </View>
-        </View>
-        <Text
-          variant="titleMedium"
-          style={{
-            color: isReceive ? theme.colors.primary : theme.colors.error,
-            fontWeight: "bold",
-          }}
-        >
-          {isReceive ? "+" : "-"} {amount} €
-        </Text>
-      </View>
 
-      <Divider style={styles.cardDivider} />
+          <Divider style={styles.cardDivider} />
 
-      <View style={styles.cardDetails}>
-        <View style={styles.detailRow}>
-          <Text variant="bodySmall" style={styles.detailLabel}>
-            Catégorie:
-          </Text>
-          <Text variant="bodyMedium">{category}</Text>
-        </View>
-        <View style={styles.detailRow}>
-          <Text variant="bodySmall" style={styles.detailLabel}>
-            Avec:
-          </Text>
-          <Text variant="bodyMedium">{to}</Text>
-        </View>
-      </View>
-    </Surface>
+          <View style={styles.cardDetails}>
+            <View style={styles.detailRow}>
+              <Text variant="bodySmall" style={styles.detailLabel}>
+                Catégorie:
+              </Text>
+              <Text variant="bodyMedium">{category}</Text>
+            </View>
+            <View style={styles.detailRow}>
+              <Text variant="bodySmall" style={styles.detailLabel}>
+                Avec:
+              </Text>
+              <Text variant="bodyMedium">{to}</Text>
+            </View>
+          </View>
+        </Surface>
+      </TouchableRipple>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    marginTop: 20,
-    paddingHorizontal: 16,
-    gap: 12,
-  },
-  dateHeader: {
-    marginTop: 16,
-  },
-  transactionCard: {
     marginHorizontal: 16,
     marginBottom: 12,
+    borderRadius: 12,
+  },
+  ripple: {
+    borderRadius: 13,
+  },
+  transactionCard: {
     borderRadius: 12,
     overflow: "hidden",
   },

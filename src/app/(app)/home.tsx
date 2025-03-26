@@ -1,36 +1,13 @@
 import { FlashList } from "@shopify/flash-list";
-import { StyleSheet, View, Text } from "react-native";
-import { List, Button } from "react-native-paper";
+import { router } from "expo-router";
+import { StyleSheet, View } from "react-native";
+import { FAB, List } from "react-native-paper";
 import {
+  EmptyList,
   GlobalTitlePreview,
   TransactionCard,
 } from "~/features/transactions/components";
 import { useTransaction } from "~/features/transactions/hooks";
-import { Feather } from "@expo/vector-icons";
-
-type EmptyListComponentProps = {
-  onRefresh: () => void;
-};
-
-const EmptyListComponent = ({ onRefresh }: EmptyListComponentProps) => {
-  return (
-    <View style={styles.emptyContainer}>
-      <Feather name="inbox" size={64} color="#9e9e9e" />
-      <Text style={styles.emptyTitle}>Aucune transaction</Text>
-      <Text style={styles.emptySubtitle}>
-        Vous n'avez pas encore de transactions à afficher.
-      </Text>
-      <Button
-        mode="contained"
-        onPress={onRefresh}
-        style={styles.refreshButton}
-        icon="refresh"
-      >
-        Rafraîchir
-      </Button>
-    </View>
-  );
-};
 
 const HomePage = () => {
   const {
@@ -58,6 +35,7 @@ const HomePage = () => {
         data={data?.items}
         renderItem={({ item: transaction }) => (
           <TransactionCard
+            id={transaction.id}
             direction={transaction.direction}
             title={transaction.title}
             amount={transaction.amount}
@@ -67,7 +45,17 @@ const HomePage = () => {
           />
         )}
         estimatedItemSize={200}
-        ListEmptyComponent={<EmptyListComponent onRefresh={refetch} />}
+        ListEmptyComponent={
+          <EmptyList
+            onRefresh={(): void => router.push("(app)/(transaction)/create")}
+          />
+        }
+      />
+
+      <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={(): void => router.push("(app)/(transaction)/create")}
       />
     </>
   );
@@ -83,28 +71,11 @@ const styles = StyleSheet.create({
   dateHeader: {
     marginTop: 16,
   },
-  emptyContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 50,
-    paddingHorizontal: 20,
-  },
-  emptyTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 16,
-    color: "#424242",
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    color: "#757575",
-    textAlign: "center",
-    marginTop: 8,
-    marginBottom: 24,
-  },
-  refreshButton: {
-    marginTop: 12,
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });
 

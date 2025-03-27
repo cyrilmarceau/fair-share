@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { View } from "react-native";
@@ -29,11 +28,6 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
     login.mutateAsync(data);
   };
-
-  if (login.isSuccess) {
-    alert(login.isSuccess);
-    // router.replace("/login");
-  }
 
   return (
     <View

@@ -1,7 +1,13 @@
 import { z } from "zod";
-import { TransactionSchema, TransactionsSchema } from "../schemas";
+import {
+  TransactionSchema,
+  TransactionsSchema,
+  type TransactionAmountSchema,
+} from "../schemas";
 
 type Transaction = z.infer<typeof TransactionSchema>;
 type Transactions = z.infer<typeof TransactionsSchema>;
 
-export type { Transaction, Transactions };
+type TransactionAmount = z.infer<typeof TransactionAmountSchema>;
+
+export type { Transaction, Transactions, TransactionAmount };

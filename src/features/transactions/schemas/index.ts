@@ -20,4 +20,9 @@ const TransactionsSchema = z.object({
   pages: z.number(),
 });
 
-export { TransactionSchema, TransactionsSchema };
+const TransactionAmountSchema = z.object({
+  total_to_pay: z.number(),
+  total_to_receive: z.number(),
+});
+
+export { TransactionSchema, TransactionsSchema, TransactionAmountSchema };

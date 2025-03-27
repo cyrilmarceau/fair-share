@@ -1,12 +1,27 @@
 import { Avatar, Card, Text, useTheme } from "react-native-paper";
+import { useTransaction } from "../hooks";
 
 type GlobalTitlePreviewProps = {
   title: string;
   icon: string;
+  direction?: "to_receive" | "to_pay";
 };
 
-const GlobalTitlePreview = ({ title, icon }: GlobalTitlePreviewProps) => {
+const GlobalTitlePreview = ({
+  title,
+  icon,
+  direction,
+}: GlobalTitlePreviewProps) => {
   const theme = useTheme();
+
+  const {
+    amount: { data, isRefetching, error },
+  } = useTransaction();
+
+  const isReceive = direction === "to_receive";
+  const amount = isReceive
+    ? `+ ${data?.total_to_receive} €`
+    : `- ${data?.total_to_pay} €`;
 
   return (
     <Card
@@ -27,14 +42,19 @@ const GlobalTitlePreview = ({ title, icon }: GlobalTitlePreviewProps) => {
           <Avatar.Icon
             {...props}
             size={25}
-            style={{ backgroundColor: theme.colors.primary }}
             color="white"
             icon={icon}
+            style={{
+              backgroundColor: isReceive
+                ? theme.colors.primary
+                : theme.colors.error,
+              marginRight: 12,
+            }}
           />
         )}
       />
       <Card.Content>
-        <Text variant="titleLarge">+ 200$</Text>
+        <Text variant="titleLarge">{amount}</Text>
       </Card.Content>
     </Card>
   );

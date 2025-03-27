@@ -19,8 +19,16 @@ const HomeScreen = () => {
       {data && data?.total > 0 && (
         <>
           <View style={styles.container}>
-            <GlobalTitlePreview title="A recevoir" icon="arrow-up" />
-            <GlobalTitlePreview title="A Payer" icon="arrow-down" />
+            <GlobalTitlePreview
+              direction="to_receive"
+              title="A recevoir"
+              icon="arrow-up"
+            />
+            <GlobalTitlePreview
+              direction="to_pay"
+              title="A Payer"
+              icon="arrow-down"
+            />
           </View>
 
           <List.Subheader style={styles.dateHeader}>

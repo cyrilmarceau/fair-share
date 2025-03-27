@@ -10,9 +10,9 @@ export default function AppLayout() {
   }
 
   return (
-    <Tabs>
+    <Tabs screenOptions={{ headerShown: false, tabBarShowLabel: true }}>
       <Tabs.Screen
-        name="home"
+        name="(home)"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
@@ -21,19 +21,12 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="(settings)"
         options={{
           title: "Settings",
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="cog" color={color} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="(transaction)"
-        options={{
-          headerShown: false,
-          href: null, // This hides the user route from the tab bar
         }}
       />
     </Tabs>

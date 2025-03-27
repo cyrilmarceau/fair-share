@@ -9,7 +9,7 @@ import {
 } from "~/features/transactions/components";
 import { useTransaction } from "~/features/transactions/hooks";
 
-const HomePage = () => {
+const HomeScreen = () => {
   const {
     transactions: { data, refetch, isRefetching },
   } = useTransaction();
@@ -47,7 +47,7 @@ const HomePage = () => {
         estimatedItemSize={200}
         ListEmptyComponent={
           <EmptyList
-            onRefresh={(): void => router.push("(app)/(transaction)/create")}
+            onRefresh={(): void => router.push("/transaction/create")}
           />
         }
       />
@@ -55,7 +55,7 @@ const HomePage = () => {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={(): void => router.push("(app)/(transaction)/create")}
+        onPress={(): void => router.push("/transaction/create")}
       />
     </>
   );
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomePage;
+export default HomeScreen;

@@ -32,8 +32,8 @@ const TransactionCard = ({
         style={styles.ripple}
         borderless={true}
         onPress={() =>
-          router.navigate({
-            pathname: "(app)/(transaction)/[id]",
+          router.push({
+            pathname: "/transaction/[id]",
             params: { id },
           })
         }
